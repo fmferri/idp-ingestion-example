@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: service-with-docs
   description: NextgenServcewith docs
-  annotation:
+  annotations:
     backstage.io/techdocs: dir:.
 spec:
   type: service
