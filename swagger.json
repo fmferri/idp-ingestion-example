@@ -1,0 +1,1364 @@
+{
+    "openapi": "3.0.1",
+    "info": { "title": "NEXT-GEN" },
+    "servers": [
+        {
+            "url": "https://swmh-stage.meinetour.msh.de/user",
+            "description": "MSH server URL -USER"
+        },
+        {
+            "url": "http://95.231.164.89:7575/user",
+            "description": "Catenate server URL -USER"
+        },
+        {
+            "url": "http://localhost:8080/user",
+            "description": "localhost URL -USER"
+        },
+        {
+            "url": "https://mshgalpngzdwv1.msh.de/",
+            "description": "MSH Demo Server URL -USER"
+        }
+    ],
+    "security": [{ "Bearer Authentication": [] }],
+    "paths": {
+        "/user/me/mode": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "Get particular courier mode [#Courier]",
+                "description": "The data about the particular couriers. This endpoint is available only for Couriers.",
+                "operationId": "getMeMode",
+                "responses": {
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetMeModeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["user-controller"],
+                "summary": "Update particular courier mode [#Courier]",
+                "description": "The data about the particular couriers. This endpoint is available only for Couriers.",
+                "operationId": "putMeMode",
+                "parameters": [
+                    {
+                        "name": "drivingMode",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PutMeModeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/vsg": {
+            "post": {
+                "tags": ["user-controller"],
+                "summary": "Create VSG [#Admin]",
+                "description": "It creates a VSG",
+                "operationId": "createVsg",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateVsgRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateVsgResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/manager": {
+            "post": {
+                "tags": ["user-controller"],
+                "summary": "createManager [#Admin]",
+                "description": "Creates a new manager",
+                "operationId": "createManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateManagerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Resource updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/couriers/{id}": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "Get particular courier data by id [#Manager]",
+                "description": "The data about the particular couriers. This endpoint is available only for Managers.",
+                "operationId": "getCourier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of courier",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateCourierResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["user-controller"],
+                "summary": "createCourier [#Manager]",
+                "description": "Creates a new courier",
+                "operationId": "createCourier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CourierRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateCourierResponse"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Resource updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["user-controller"],
+                "summary": "Delete particular courier [#Manager][#Admin]",
+                "description": "Delete courier. This endpoint is available only for Managers and Admins",
+                "operationId": "deleteCourier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of courier",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateCourierResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["user-controller"],
+                "summary": "updateCourier [#Manager]",
+                "description": "Option to update the courier. Currently, there is only one option to enable/disable the account",
+                "operationId": "updateCourier",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of courier",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CourierRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateCourierResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/vsg/{id}": {
+            "delete": {
+                "tags": ["user-controller"],
+                "summary": "delete VSG [#Admin]",
+                "description": "It deletes the specific VGS",
+                "operationId": "deleteVsg",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "format": "int32" }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteVsgResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["user-controller"],
+                "summary": "update VSG [#Admin]",
+                "description": "It updates the specific VSG",
+                "operationId": "updateVsg",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "format": "int32" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateVsgRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateVsgResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/managers": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "Get list of managers [#Admin]",
+                "description": "List of managers. The endpoint is available only for Admins.",
+                "operationId": "getListOfManagers",
+                "responses": {
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ManagerResponses"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No Managers found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["user-controller"],
+                "summary": "patchManager [#Admin]",
+                "description": "Update of a group and isActive of this Manager",
+                "operationId": "PatchManager",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateManagerRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "No manager found for this managerId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateManagerResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/vsgForManager": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "get VSGForManager [#Manager]",
+                "description": "It gets all the VSG",
+                "operationId": "getVsgForManager",
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetVsgManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/vsgForAdmin": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "get VSGForAdmin [#Admin]",
+                "description": "It gets all the VSG",
+                "operationId": "getVsgForAdmin",
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetVSGAdminResponses"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/me": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "Get profile for the particular user [#All]",
+                "description": "The data about the particular user. This endpoint is available only for Couriers, Admins and Managers. The courierId is available only for Couriers",
+                "operationId": "getMe",
+                "responses": {
+                    "404": {
+                        "description": "No courier found for this courierId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetMeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/managers/{id}": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "getManagerById [#Admin]",
+                "description": "It returns the manager with the given managerId",
+                "operationId": "getManagerById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the manager",
+                        "required": true,
+                        "schema": { "type": "integer", "format": "int32" }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No manager found for this managerId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/districts": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "getDistricts [#Manager][#Admin]",
+                "description": "It returns a list of Districts",
+                "operationId": "getDistricts",
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetDistrictsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/couriers": {
+            "get": {
+                "tags": ["user-controller"],
+                "summary": "get list of courier [#Admin][#Manager]",
+                "description": "Return list of courier",
+                "operationId": "getListOfCouriers",
+                "responses": {
+                    "404": {
+                        "description": "No District found for this Manager Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCourierResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/manager/{id}": {
+            "delete": {
+                "tags": ["user-controller"],
+                "summary": "deleteManagerById [#Admin]",
+                "description": "It deletes the manager with given managerId",
+                "operationId": "deleteManagerById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "No manager found for this managerId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Call successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateManagerResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BaseErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BaseErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" }
+                }
+            },
+            "PutMeModeResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "success": { "type": "boolean" }
+                }
+            },
+            "CreateVsgRequest": {
+                "required": ["gpId", "name"],
+                "type": "object",
+                "properties": {
+                    "gpId": { "type": "string" },
+                    "name": { "type": "string" }
+                }
+            },
+            "CreateVsgResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "gpId": { "type": "string" },
+                    "name": { "type": "string" }
+                }
+            },
+            "CreateManagerRequest": {
+                "required": [
+                    "email",
+                    "employment_valid_from",
+                    "firstName",
+                    "lastName",
+                    "managerId",
+                    "vsgList"
+                ],
+                "type": "object",
+                "properties": {
+                    "managerId": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "vsgList": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "email": { "type": "string" },
+                    "employment_valid_from": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "employment_valid_to": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_street": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_house_number_addition": { "type": "string" },
+                    "active": { "type": "boolean" }
+                }
+            },
+            "Vsg": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "integer", "format": "int32" },
+                    "name": { "type": "string" },
+                    "gpId": { "type": "string" }
+                }
+            },
+            "CreateManagerResponse": {
+                "required": [
+                    "createdAt",
+                    "email",
+                    "firstName",
+                    "isActive",
+                    "lastName",
+                    "managerId"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "managerId": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "isActive": { "type": "boolean" },
+                    "email": { "type": "string" },
+                    "createdAt": { "type": "string", "format": "date-time" }
+                }
+            },
+            "CourierRequest": {
+                "required": [
+                    "courierId",
+                    "email",
+                    "employment_valid_from",
+                    "firstName",
+                    "lastName",
+                    "vsgList"
+                ],
+                "type": "object",
+                "properties": {
+                    "courierId": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "mobile": { "type": "string" },
+                    "vsgList": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "drivingMode": {
+                        "type": "string",
+                        "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                    },
+                    "employment_valid_from": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "employment_valid_to": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "email": { "type": "string" },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_street": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_house_number_addition": { "type": "string" },
+                    "lastLogin": { "type": "string", "format": "date-time" },
+                    "createdAt": { "type": "string", "format": "date-time" },
+                    "active": { "type": "boolean" }
+                }
+            },
+            "CreateCourierResponse": {
+                "required": [
+                    "courierId",
+                    "email",
+                    "employment_valid_from",
+                    "firstName",
+                    "isActive",
+                    "lastName",
+                    "vsgList"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "courierId": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "mobile": { "type": "string" },
+                    "vsgList": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "isActive": { "type": "boolean" },
+                    "email": { "type": "string" },
+                    "employment_valid_from": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "employment_valid_to": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_street": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_house_number_addition": { "type": "string" },
+                    "drivingMode": {
+                        "type": "string",
+                        "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                    },
+                    "lastLogin": { "type": "string", "format": "date-time" },
+                    "createdAt": { "type": "string", "format": "date-time" }
+                }
+            },
+            "UpdateManagerRequest": {
+                "type": "object",
+                "properties": {
+                    "vsgList": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "lastName": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "isActive": { "type": "boolean" },
+                    "email": { "type": "string" },
+                    "employment_valid_from": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "employment_valid_to": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_street": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_house_number_addition": { "type": "string" }
+                }
+            },
+            "UpdateManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" }
+                }
+            },
+            "UpdateCourierResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "string" }
+                }
+            },
+            "GetVsgManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "vsg": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    }
+                }
+            },
+            "GetVSGAdminResponses": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VSGAdminResponse"
+                        }
+                    }
+                }
+            },
+            "ListManagerVSGAdminResponse": {
+                "type": "object",
+                "properties": {
+                    "firstName": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "managerId": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" }
+                }
+            },
+            "VSGAdminResponse": {
+                "type": "object",
+                "properties": {
+                    "vsgDBId": { "type": "integer", "format": "int32" },
+                    "vsgName": { "type": "string" },
+                    "vsgGpId": { "type": "string" },
+                    "managers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ListManagerVSGAdminResponse"
+                        }
+                    },
+                    "courierCount": { "type": "integer", "format": "int32" }
+                }
+            },
+            "GetMeResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "email": { "type": "string" },
+                    "roles": { "type": "array", "items": { "type": "string" } },
+                    "userId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "surname": { "type": "string" }
+                }
+            },
+            "GetMeModeResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "drivingMode": {
+                        "type": "string",
+                        "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                    }
+                }
+            },
+            "ManagerResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "managerId": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "email": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "createdAt": { "type": "string", "format": "date-time" },
+                    "validFrom": { "type": "string", "format": "date-time" },
+                    "validTo": { "type": "string", "format": "date-time" },
+                    "isActive": { "type": "boolean" },
+                    "vsgList": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "address_stress": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_house_number_addition": { "type": "string" },
+                    "active": { "type": "boolean" }
+                }
+            },
+            "ManagerResponses": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ManagerResponse"
+                        }
+                    },
+                    "total": { "type": "integer", "format": "int32" }
+                }
+            },
+            "DistrictResponse": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "integer", "format": "int32" },
+                    "name": { "type": "string" },
+                    "districtId": { "type": "string" },
+                    "courierId": { "type": "string" },
+                    "courierFirstName": { "type": "string" },
+                    "courierLastName": { "type": "string" },
+                    "drivingMode": {
+                        "type": "string",
+                        "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "REASSIGNED",
+                            "ASSIGNED_NOTIFIED",
+                            "ASSIGNED_NOT_NOTIFIED",
+                            "ASSIGNED"
+                        ]
+                    }
+                }
+            },
+            "GetDistrictsResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DistrictResponse"
+                        }
+                    },
+                    "total": { "type": "integer", "format": "int32" }
+                }
+            },
+            "GetCourierResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" },
+                    "courierId": { "type": "string" },
+                    "firstName": { "type": "string" },
+                    "lastName": { "type": "string" },
+                    "drivingMode": {
+                        "type": "string",
+                        "enum": ["CAR", "BIKE", "PEDESTRIAN"]
+                    },
+                    "email": { "type": "string" },
+                    "mobile": { "type": "string" },
+                    "VSG": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    },
+                    "address_street": { "type": "string" },
+                    "address_house_number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "address_zip": { "type": "string" },
+                    "address_city": { "type": "string" },
+                    "address_house_number_addition": { "type": "string" },
+                    "isActive": { "type": "boolean" },
+                    "lastLogin": { "type": "string", "format": "date-time" },
+                    "createdAt": { "type": "string", "format": "date-time" },
+                    "vsg": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Vsg" }
+                    }
+                }
+            },
+            "DeleteVsgResponse": {
+                "type": "object",
+                "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" },
+                    "id": { "type": "integer", "format": "int32" }
+                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer Authentication": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
