@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: service-with-docs
+  description: NextgenServcewith docs
+  annotation:
+    backstage.io/techdocs: dir:.
+spec:
+  type: service
+  lifecycle: production
+  owner: user-team
