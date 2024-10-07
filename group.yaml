@@ -4,11 +4,11 @@ metadata:
   name: idpadmins
   description: The infra business unit
 spec:
-  type: business-unit
+  type: team
   profile:
     displayName: Infrastructure
     email: infrastructure@example.com
     picture: https://example.com/groups/bu-infrastructure.jpeg
-  # parent: ops
+  parent: ops
   children: [backstage, other]
   members: [jdoe]
