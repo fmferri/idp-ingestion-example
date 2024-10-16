@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-ffe-app
+  annotations:
+    backstage.io/kubernetes-id: my-ffe-app
+    backstage.io/kubernetes-namespace: backstage-system
+spec:
+  type: service
+  lifecycle: production
+  owner: my-team
