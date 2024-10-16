@@ -3,7 +3,8 @@ kind: Component
 metadata:
   name: helloclaude
   annotations:
-    'backstage.io/kubernetes-id': helloclaude
+    backstage.io/kubernetes-id: helloclaude
+    backstage.io/kubernetes-namespace: backstage-system
 spec:
   type: service
   lifecycle: production
